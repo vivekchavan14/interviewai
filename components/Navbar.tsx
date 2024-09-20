@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import { cn } from "@/lib/utils";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "@/components/ui/button";
@@ -33,10 +32,12 @@ const Navbar = () => {
               <MobileNav />
             ) : (
               <Link
-                className={buttonVariants({
-                  size: "sm",
-                  className: "sm:hidden mr-3",
-                })}
+                className={cn(
+                  buttonVariants({
+                    size: "sm",
+                  }),
+                  "sm:hidden mr-3"
+                )}
                 href="/jobs"
               >
                 Dashboard
@@ -44,27 +45,35 @@ const Navbar = () => {
             )}
 
             {/* Desktop Links */}
-            <div className="hidden sm:flex items-center space-x-6">
+            <div className="hidden sm:flex items-center space-x-6 text-black">
               {!isUserSignedIn ? (
                 <>
                   <Link
                     href="/pricing"
-                    className={buttonVariants({
-                      variant: "ghost",
-                      size: "sm",
-                    })}
+                    className={cn(
+                      buttonVariants({
+                        variant: "ghost",
+                        size: "sm",
+                      }),
+                      "text-black"
+                    )} // Manually set the text color to black
                   >
                     Pricing
                   </Link>
+
                   <Link
                     href="/sign-in"
-                    className={buttonVariants({
-                      variant: "ghost",
-                      size: "sm",
-                    })}
+                    className={cn(
+                      buttonVariants({
+                        variant: "ghost",
+                        size: "sm",
+                      }),
+                      "text-black"
+                    )} // Manually set the text color to black
                   >
-                    Sign in
+                    Sign In
                   </Link>
+
                   <Link
                     href="/sign-up"
                     className={buttonVariants({
