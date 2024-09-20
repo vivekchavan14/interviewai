@@ -5,6 +5,11 @@
  */
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { config } from 'dotenv';
+
+// Load environment variables
+config({ path: '.env.local' });
+
   
   const apiKey = process.env.GEMINI_API_KEY;
   const genAI = new GoogleGenerativeAI(apiKey);
