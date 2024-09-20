@@ -1,7 +1,7 @@
-import React from 'react'
 import Navbar from '@/components/Navbar';
+import React from 'react'
 
-const Jobslayout = ({
+const layout = ({
     children,
   }: Readonly<{
     children: React.ReactNode;
@@ -14,4 +14,5 @@ const Jobslayout = ({
   )
 }
 
-export default Jobslayout
+
+export default layout
