@@ -62,7 +62,7 @@ const Navbar = () => {
                   </Link>
 
                   <Link
-                    href="/sign-in"
+                    href="/admin"
                     className={cn(
                       buttonVariants({
                         variant: "ghost",
@@ -75,7 +75,7 @@ const Navbar = () => {
                   </Link>
 
                   <Link
-                    href="/sign-up"
+                    href="/jobs"
                     className={buttonVariants({
                       size: "sm",
                     })}

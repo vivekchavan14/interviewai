@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import AddJob from './../admin/_components/AddJob';
 import { db } from "@/utils/db";  // Import your DB utility
 import { Interview } from "@/utils/schema";  // Adjust as necessary
+import Link from 'next/link';
 
 const Page = () => {
   const [jobs, setJobs] = useState([]);
@@ -23,8 +24,8 @@ const Page = () => {
 
   return (
     <div className="p-6">
-    <h2 className="font-bold text-2xl mb-4">Job Board</h2>
-    <h3 className="font-bold text-xl mt-10 mb-4">Available Jobs</h3>
+      <h2 className="font-bold text-2xl mb-4">Job Board</h2>
+      <h3 className="font-bold text-xl mt-10 mb-4">Available Jobs</h3>
       <div className="flex grid grid-cols-1 md:grid-cols-2 gap-6">
         {jobs.map((job) => (
           <div key={job.interviewId} className="p-4 rounded-lg shadow-md bg-gray-50">
@@ -32,10 +33,12 @@ const Page = () => {
             <p className="text-gray-600">{job.jobDescription}</p>
             <p className="text-gray-700"><strong>Location:</strong> {job.location}</p>
             <p className="text-gray-700"><strong>Salary:</strong> {job.salary}</p>
-            <p className="text-gray-700"><strong>Experience:</strong> {job.experience}</p>
-            <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-              Start Interview
-            </button>
+            <p className="text-gray-700"><strong>Experience:</strong> {job.Experience}</p> {/* Ensure the field name matches your schema */}
+            <Link href={`/interviewai/${job.interviewId}`}>
+              <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                Start Interview
+              </button>
+            </Link>
           </div>
         ))}
       </div>

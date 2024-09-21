@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import AddJob from "./_components/AddJob";
 import Navbar from "@/components/Navbar";
 import Header from "../jobs/_components/Header";
-import { db } from "@/utils/db";  // Import your DB utility
-import { Interview } from "@/utils/schema";  // Adjust as necessary
+import { db } from "@/utils/db";  
+import { Interview } from "@/utils/schema"; 
 
 const Page = () => {
   const [jobs, setJobs] = useState([]);

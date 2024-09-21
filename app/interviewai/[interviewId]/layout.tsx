@@ -1,19 +1,17 @@
-import Navbar from '@/components/Navbar';
 import React from 'react'
-import Header from '../jobs/_components/Header';
+import Navbar from '@/components/Navbar';
 
-const layout = ({
+const Interviewlayout = ({
     children,
   }: Readonly<{
     children: React.ReactNode;
   }>)  => {
   return (
     <div>
-       <Header />
+       <Navbar />
        {children}
     </div>
   )
 }
 
-
-export default layout
+export default Interviewlayout
