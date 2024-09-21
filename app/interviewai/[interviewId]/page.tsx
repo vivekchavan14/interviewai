@@ -1,14 +1,12 @@
 'use client';
 
-//import { db } from '@/utils/db';
-//import { Interview } from '@/utils/schema';
-//import React, { useEffect, useState } from 'react';
-//import { eq } from 'drizzle-orm';
-import ChatBox from '@/components/ChatBox';
-import Webcam from 'react-webcam';
+import { db } from '@/utils/db';
+import { Interview } from '@/utils/schema';
+import React, { useEffect, useState } from 'react';
+import { eq } from 'drizzle-orm';
+import Link from 'next/link';
 
 // Define the interface for the interview data
-/*
 interface InterviewData {
   interviewId: string;
   jsonResponse: string;
@@ -17,60 +15,49 @@ interface InterviewData {
   experience: string;
   createdBy: string;
   createdAt: string;
-}*/
+}
 
-const Page = () => {
- /* const [, setInterviewData] = useState<InterviewData | null>(null);
+const InterviewDetails = ({ params }: { params: { interviewId: string } }) => {
+  const [interviewData, setInterviewData] = useState<InterviewData | null>(null);
 
   useEffect(() => {
-    console.log(params.interviewId);
     GetInterviewDetails();
   }, [params.interviewId]);
 
   const GetInterviewDetails = async () => {
-    const result = await db.select().from(Interview)
-      .where(eq(Interview.interviewId, params.interviewId));
-    console.log(result);
-    setInterviewData(result[0]); // Cast the result to InterviewData
-  };*/
+    try {
+      const result = await db.select().from(Interview)
+        .where(eq(Interview.interviewId, params.interviewId));
+      setInterviewData(result[0]); // Cast the result to InterviewData
+    } catch (error) {
+      console.error("Error fetching interview details:", error);
+    }
+  };
+
+  if (!interviewData) return <p>Loading...</p>;
 
   return (
-    <div className="flex h-screen p-10">
-      {/* Video Call Area */}
-      <div className="relative flex-1">
-        {/* Fullscreen Webcam */}
-        <div className="absolute inset-0">
-          <Webcam
-            audio={true}
-            className="w-full h-full object-cover bg-black"
-          />
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">{interviewData.jobPosition}</h2>
+        <p className="text-gray-700 mb-2">
+          <strong>Job Description:</strong> {interviewData.jobDescription}
+        </p>
+        <p className="text-gray-700 mb-2">
+          <strong>Experience:</strong> {interviewData.experience}
+        </p>
+        <p className="text-gray-700 mb-4">
+          <strong>Created by:</strong> {interviewData.createdBy}
+        </p>
 
-        {/* Peer Webcam */}
-        <div className="absolute bottom-4 right-4 w-1/4 h-1/4 bg-black rounded-lg shadow-lg">
-          <Webcam
-            audio={false}
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        {/* End Call button */}
-        <div className="absolute bottom-4 left-4">
-          <button
-            // onClick={endCall}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            End Call
+        <Link href={`/interviewai/${params.interviewId}/start`}>
+          <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+            Start Interview
           </button>
-        </div>
-      </div>
-
-      {/* Chatbox Area */}
-      <div className="w-1/3 bg-gray-100 p-4">
-        <ChatBox />
+        </Link>
       </div>
     </div>
   );
 };
 
-export default Page;
+export default InterviewDetails;
