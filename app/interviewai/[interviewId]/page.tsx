@@ -1,15 +1,26 @@
 'use client';
 
-import { db } from '@/utils/db';
-import { Interview } from '@/utils/schema';
-import React, { useEffect, useState } from 'react';
-import { eq } from 'drizzle-orm';
+//import { db } from '@/utils/db';
+//import { Interview } from '@/utils/schema';
+//import React, { useEffect, useState } from 'react';
+//import { eq } from 'drizzle-orm';
 import ChatBox from '@/components/ChatBox';
 import Webcam from 'react-webcam';
 
-const Page = ({ params }: { params: { interviewId: string } }) => {
+// Define the interface for the interview data
+/*
+interface InterviewData {
+  interviewId: string;
+  jsonResponse: string;
+  jobPosition: string;
+  jobDescription: string;
+  experience: string;
+  createdBy: string;
+  createdAt: string;
+}*/
 
-  const [interviewData, setInterviewData] = useState<any>();
+const Page = () => {
+ /* const [, setInterviewData] = useState<InterviewData | null>(null);
 
   useEffect(() => {
     console.log(params.interviewId);
@@ -20,8 +31,8 @@ const Page = ({ params }: { params: { interviewId: string } }) => {
     const result = await db.select().from(Interview)
       .where(eq(Interview.interviewId, params.interviewId));
     console.log(result);
-    setInterviewData(result[0]);
-  };
+    setInterviewData(result[0]); // Cast the result to InterviewData
+  };*/
 
   return (
     <div className="flex h-screen p-10">

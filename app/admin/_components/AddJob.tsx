@@ -3,80 +3,75 @@
 import React, { useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-//import { chatSession } from "@/utils/ai.js";
 import { initChatSession } from "@/utils/ai.js";
 import { db } from "@/utils/db";
 import { Interview } from "@/utils/schema";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment";
 
-
 const AddJob = () => {
-  // State for form inputs
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [experience, setExperience] = useState("");
-  const [response, setResponse] = useState<string>("");
-  const [jsonResponse, setJsonResponse] = useState("")
-  const { user } = useUser()
+  const [, setResponse] = useState<string>(""); // Fully initialized
+  const [, setJsonResponse] = useState(""); // Fully initialized
+  const { user } = useUser();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Construct the prompt for the AI
     const inputPrompt = `Job Position: ${title}, Job Description: ${description}, Experience Required: ${experience}, Location: ${location}, Salary: ${salary}. 
     Generate 4 interview questions relevant to the job. Please format the response as a JSON with questions and expected answers.`;
 
     try {
-     const chatSession = await initChatSession();
-     const result = await chatSession.sendMessage(inputPrompt);
-      
-      // Safely handle the response
-      if (result?.response?.text()) {
-        setResponse(result.response.text());
-        console.log(result.response.text());
-        const JSONResponse = ( result.response.text()).replace('```json', '').replace('```','')
-        console.log(JSON.parse(JSONResponse));
-        setJsonResponse(JSONResponse);
+      const chatSession = await initChatSession();
+      const result = await chatSession.sendMessage(inputPrompt);
 
-         // Insert into the database
-         const resp = await db.insert(Interview).values({
-            interviewId: uuidv4(),
+      if (result?.response?.text()) {
+        const resultText = result.response.text();
+        setResponse(resultText);
+
+        // Clean and parse the JSON response safely
+        const JSONResponse = resultText.replace("```json", "").replace("```", "");
+        try {
+          const parsedJSON = JSON.parse(JSONResponse);
+          console.log(parsedJSON);
+          setJsonResponse(JSONResponse);
+
+          // Insert into the database (ensure interviewId is a valid field in the schema)
+          const resp = await db.insert(Interview).values({
+            interviewId: uuidv4(), // Ensure interviewId is valid in schema
             jsonResponse: JSONResponse,
             jobPosition: title,
             jobDescription: description,
             Experience: experience,
-            createdBy: user?.primaryEmailAddress?.emailAddress,
-            createdAt: moment().format('DD-MM-YYYY'),  // Correct date format
+            createdBy: user?.primaryEmailAddress?.emailAddress || "Unknown",
+            createdAt: moment().format("YYYY-MM-DD"), // Correct date format
           }).returning({
-            interviewId: Interview.interviewId,
+            interviewId: Interview.interviewId, // Assuming interviewId exists in schema
           });
-    
-          console.log("Interview saved:", resp);
 
+          console.log("Interview saved:", resp);
+        } catch (err) {
+          console.error("Error parsing JSON response:", err);
+        }
       } else {
         console.error("Unexpected response format:", result);
       }
-      
     } catch (error) {
       console.error("Error while fetching response:", error);
     }
   };
 
-  //console.log(response)
-
-
-
-
-  
   return (
     <div className="p-6 rounded-lg shadow-md bg-gray-50">
       <h2 className="font-bold text-lg text-gray-800 mb-4">+ Add New Job</h2>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* Job Title */}
         <div>
           <label className="block text-gray-700">Job Title</label>
           <input
@@ -89,7 +84,6 @@ const AddJob = () => {
           />
         </div>
 
-        {/* Job Description */}
         <div>
           <label className="block text-gray-700">Job Description</label>
           <textarea
@@ -102,7 +96,6 @@ const AddJob = () => {
           />
         </div>
 
-        {/* Job Experience */}
         <div>
           <label className="block text-gray-700">Experience</label>
           <input
@@ -115,7 +108,6 @@ const AddJob = () => {
           />
         </div>
 
-        {/* Job Location */}
         <div>
           <label className="block text-gray-700">Location</label>
           <input
@@ -128,7 +120,6 @@ const AddJob = () => {
           />
         </div>
 
-        {/* Job Salary */}
         <div>
           <label className="block text-gray-700">Salary</label>
           <input
@@ -141,7 +132,6 @@ const AddJob = () => {
           />
         </div>
 
-        {/* Submit Button */}
         <div>
           <button
             type="submit"

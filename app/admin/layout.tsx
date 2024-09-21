@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import React from 'react'
 import Header from '../jobs/_components/Header';
 

@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import AddJob from "./_components/AddJob";
-import Navbar from "@/components/Navbar";
-import Header from "../jobs/_components/Header";
+
 import { db } from "@/utils/db";  
 import { Interview } from "@/utils/schema"; 
 
@@ -12,7 +11,10 @@ const Page = () => {
 
   const fetchJobs = async () => {
     try {
-      const jobList = await db.select().from(Interview).orderBy('createdAt', 'desc');  // Fetch jobs from DB
+      const jobList = await db
+        .select()
+        .from(Interview)
+        .orderBy(Interview.createdAt, 'desc');  
       setJobs(jobList);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -20,7 +22,7 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchJobs();  // Fetch jobs when component mounts
+    fetchJobs();  
   }, []);
 
   return (
@@ -38,7 +40,7 @@ const Page = () => {
               {jobs.map((job) => (
                 <div key={job.interviewId} className="p-4 rounded-lg shadow-md bg-gray-50">
                   <h4 className="font-bold text-lg text-gray-800">{job.jobPosition}</h4>
-                  <p className="text-gray-600">{job.jobDescription}</p>
+                  <p className="text-gray-600">Job Description: {job.jobDescription}</p>
                   <p className="text-gray-700"><strong>Location:</strong> {job.location}</p>
                   <p className="text-gray-700"><strong>Salary:</strong> {job.salary}</p>
                   <p className="text-gray-700"><strong>Experience:</strong> {job.experience}</p>

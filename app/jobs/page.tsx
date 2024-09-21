@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import AddJob from './../admin/_components/AddJob';
-import { db } from "@/utils/db";  // Import your DB utility
-import { Interview } from "@/utils/schema";  // Adjust as necessary
+import { db } from "@/utils/db";  
+import { Interview } from "@/utils/schema";  
 import Link from 'next/link';
 
 const Page = () => {
