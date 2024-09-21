@@ -19,7 +19,9 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "noUnusedLocals": false, // Disable unused local variable checks
+    "noUnusedParameters": false // Disable unused parameters checks
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/ai.js"],
   "exclude": ["node_modules"]
