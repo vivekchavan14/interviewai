@@ -10,7 +10,7 @@ const Page = () => {
 
   const fetchJobs = async () => {
     try {
-      const jobList = await db.select().from(Interview).orderBy('createdAt', 'desc');  // Fetch jobs from DB
+      const jobList = await db.select().from(Interview) // Fetch jobs from DB
       setJobs(jobList);
     } catch (error) {
       console.error("Error fetching jobs:", error);
