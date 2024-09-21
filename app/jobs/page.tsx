@@ -1,36 +1,35 @@
-import React from 'react';
-import AddJob from './../admin/_components/AddJob';
+'use client';
 
-const jobsData = [
-  {
-    id: 1,
-    title: "Software Engineer",
-    description: "Develop and maintain software applications.",
-    location: "Remote",
-    salary: "$80,000 - $100,000",
-    experience: "2+ years",
-  },
-  {
-    id: 2,
-    title: "Product Manager",
-    description: "Lead product development and strategy.",
-    location: "New York, NY",
-    salary: "$90,000 - $120,000",
-    experience: "3+ years",
-  },
-  // Add more jobs as needed
-];
+import React, { useEffect, useState } from 'react';
+import AddJob from './../admin/_components/AddJob';
+import { db } from "@/utils/db";  // Import your DB utility
+import { Interview } from "@/utils/schema";  // Adjust as necessary
 
 const Page = () => {
+  const [jobs, setJobs] = useState([]);
+
+  const fetchJobs = async () => {
+    try {
+      const jobList = await db.select().from(Interview).orderBy('createdAt', 'desc');  // Fetch jobs from DB
+      setJobs(jobList);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchJobs();  
+  }, []);
+
   return (
     <div className="p-6">
-      <h2 className="font-bold text-2xl mb-4">Job Board</h2>
-      <h3 className="font-bold text-xl mt-10 mb-4">Available Jobs</h3>
+    <h2 className="font-bold text-2xl mb-4">Job Board</h2>
+    <h3 className="font-bold text-xl mt-10 mb-4">Available Jobs</h3>
       <div className="flex grid grid-cols-1 md:grid-cols-2 gap-6">
-        {jobsData.map((job) => (
-          <div key={job.id} className="p-4 rounded-lg shadow-md bg-gray-50">
-            <h4 className="font-bold text-lg text-gray-800">{job.title}</h4>
-            <p className="text-gray-600">{job.description}</p>
+        {jobs.map((job) => (
+          <div key={job.interviewId} className="p-4 rounded-lg shadow-md bg-gray-50">
+            <h4 className="font-bold text-lg text-gray-800">{job.jobPosition}</h4>
+            <p className="text-gray-600">{job.jobDescription}</p>
             <p className="text-gray-700"><strong>Location:</strong> {job.location}</p>
             <p className="text-gray-700"><strong>Salary:</strong> {job.salary}</p>
             <p className="text-gray-700"><strong>Experience:</strong> {job.experience}</p>
