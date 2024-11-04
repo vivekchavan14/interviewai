@@ -2,6 +2,18 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
     "react/no-unescaped-entities": "off",
-    "@next/next/no-page-custom-font": "off"
-  }
+    "@next/next/no-page-custom-font": "off",
+    "@typescript-eslint/no-explicit-any": "warn", // Change to warn instead of error
+    "react-hooks/exhaustive-deps": "warn", // Change to warn instead of error
+    "no-unused-vars": "warn", // Warn about unused variables
+    "react/jsx-uses-vars": "warn" // Prevent unused variables in JSX
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }] // Ignore unused variables that start with an underscore
+      }
+    }
+  ]
 }

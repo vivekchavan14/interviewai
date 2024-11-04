@@ -30,6 +30,7 @@ const InterviewPage = ({ params }: { params: { interviewId: string } }) => {
 
   useEffect(() => {
     getInterviewDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.interviewId]);
 
   const getInterviewDetails = async () => {

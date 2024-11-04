@@ -14,7 +14,7 @@ const Page = () => {
       const jobList = await db
         .select()
         .from(Interview)
-        .orderBy(Interview.createdAt, 'desc');  
+        .orderBy(Interview.createdAt.desc());  // Corrected syntax here
       setJobs(jobList);
     } catch (error) {
       console.error("Error fetching jobs:", error);

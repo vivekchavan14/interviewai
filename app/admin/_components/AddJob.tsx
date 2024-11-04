@@ -13,8 +13,6 @@ import moment from "moment";
 const AddJob = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [salary, setSalary] = useState("");
   const [experience, setExperience] = useState("");
   const [, setResponse] = useState<string>(""); // Fully initialized
   const [, setJsonResponse] = useState(""); // Fully initialized
@@ -24,7 +22,7 @@ const AddJob = () => {
     e.preventDefault();
 
     // Construct the prompt for the AI
-    const inputPrompt = `Job Position: ${title}, Job Description: ${description}, Experience Required: ${experience}, Location: ${location}, Salary: ${salary}. 
+    const inputPrompt = `Job Position: ${title}, Job Description: ${description}, Experience Required: ${experience}. 
     Generate 4 interview questions relevant to the job. Please format the response as a JSON with questions and expected answers.`;
 
     try {
