@@ -1,7 +1,4 @@
-
 import { buttonVariants } from "@/components/ui/button";
-
-
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
@@ -17,19 +14,18 @@ export default function Home() {
         {/* Notification Banner */}
         <div className="mx-auto mb-6 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-gray-300 hover:bg-white/50">
           <p className="text-sm font-semibold text-gray-700">
-            InterviewAI is public now!!
+            InterviewAI is now live! Start conducting mock interviews today!
           </p>
         </div>
 
         {/* Main Heading */}
         <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl">
-          <span className="text-blue-600">Hire</span> the best candidates
+          <span className="text-blue-600">Prepare</span> for your next interview
         </h1>
 
         {/* Subheading */}
         <p className="mt-5 max-w-prose text-lg text-zinc-700 sm:text-2xl">
-          InterviewAI helps you find and assess top talent quickly and
-          effectively.
+          InterviewAI provides realistic mock interview experiences to help you excel in your job search.
         </p>
 
         {/* Call to Action Button */}
@@ -43,7 +39,7 @@ export default function Home() {
             "text-lg"
           )}
         >
-          Get Started
+          Start Mock Interviews
         </Link>
       </MaxWidthWrapper>
       <br />
@@ -56,8 +52,7 @@ export default function Home() {
               Powered by <span className="text-blue-600">Gemini</span>
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              Our cutting-edge AI technology, powered by Gemini, ensures the
-              most accurate assessments of candidates.
+              Leverage our advanced AI technology, powered by Gemini, to simulate real interview scenarios and enhance your preparation.
             </p>
             <div className="mt-6">
               <Link
@@ -70,7 +65,7 @@ export default function Home() {
                   "text-lg"
                 )}
               >
-                Learn More
+                Learn More About Our Platform
               </Link>
             </div>
           </div>

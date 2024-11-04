@@ -4,9 +4,6 @@ import { db } from '@/utils/db';
 import { Interview } from '@/utils/schema';
 import React, { useEffect, useState } from 'react';
 import { eq } from 'drizzle-orm';
-import ChatBox from '@/components/ChatBox';
-import Webcam from 'react-webcam';
-import Link from 'next/link';
 
 interface InterviewData {
   interviewId: string;
@@ -18,18 +15,24 @@ interface InterviewData {
   createdAt: string;
 }
 
+interface InterviewQuestion {
+  question: string;
+  expected_answer?: string;
+}
+
 const InterviewPage = ({ params }: { params: { interviewId: string } }) => {
   const [interviewData, setInterviewData] = useState<InterviewData | null>(null);
-  const [interviewQuestions, setInterviewQuestions] = useState<any[]>([]);
+  const [interviewQuestions, setInterviewQuestions] = useState<InterviewQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
+  const [userResponse, setUserResponse] = useState('');
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
-  const [isResponding, setIsResponding] = useState(false);
 
   useEffect(() => {
-    GetInterviewDetails();
+    getInterviewDetails();
   }, [params.interviewId]);
 
-  const GetInterviewDetails = async () => {
+  const getInterviewDetails = async () => {
     try {
       const result = await db
         .select()
@@ -49,56 +52,92 @@ const InterviewPage = ({ params }: { params: { interviewId: string } }) => {
 
   const handleStartInterview = () => {
     setIsInterviewStarted(true);
-    setCurrentQuestionIndex(0); // Reset to first question
+    if (interviewQuestions[0]) {
+      setMessages([{ sender: 'AI Interviewer', text: interviewQuestions[0].question }]);
+    }
   };
 
   const handleEndInterview = () => {
     setIsInterviewStarted(false);
-    setCurrentQuestionIndex(0); // Reset for future interviews
-    // Optionally, navigate to an end page or perform any cleanup
+    setCurrentQuestionIndex(0);
+    setMessages([{ sender: 'System', text: 'Interview has ended.' }]);
+  };
+
+  const handleUserResponse = () => {
+    if (!userResponse.trim()) return;
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: 'Candidate', text: userResponse },
+    ]);
+
+    setUserResponse('');
+
+    if (currentQuestionIndex < interviewQuestions.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'AI Interviewer', text: interviewQuestions[currentQuestionIndex + 1].question },
+      ]);
+    } else {
+      handleEndInterview();
+    }
   };
 
   return (
-    <div className="flex h-screen p-10">
-      {/* Video/Webcam Area */}
-      <div className="relative flex-1">
-        <div className="absolute inset-0">
-          <Webcam audio={true} className="w-full h-full object-cover bg-black" />
-        </div>
-        <div className="absolute bottom-4 right-4 w-1/4 h-1/4 bg-black rounded-lg shadow-lg">
-          <Webcam audio={false} className="w-full h-full object-cover" />
-        </div>
-        <div className="absolute bottom-4 left-4">
-          {!isInterviewStarted ? (
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-              onClick={handleStartInterview}
+    <div className="flex flex-col items-center h-screen p-10 bg-gray-100">
+      <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6">
+        <h1 className="text-2xl font-bold mb-4">Interview for {interviewData?.jobPosition}</h1>
+        
+        <div className="chat-box flex flex-col space-y-4 mb-4">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`flex ${message.sender === 'AI Interviewer' ? 'justify-start' : 'justify-end'}`}
             >
-              Start Call
-            </button>
-          ) : (
-            <button
-              className="ml-4 px-4 py-2 bg-red-500 text-white rounded"
-              onClick={handleEndInterview}
-            >
-              End Call
-            </button>
-          )}
+              <div
+                className={`p-3 rounded-lg shadow text-black ${
+                  message.sender === 'AI Interviewer' ? 'bg-blue-100' : 'bg-green-100'
+                }`}
+              >
+                <p>{message.text}</p>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/* Chatbox Area */}
-      <div className="w-1/3 bg-gray-100 p-4">
-        {isInterviewStarted && interviewQuestions.length > 0 ? (
-          <ChatBox
-            interviewQuestions={interviewQuestions}
-            currentQuestionIndex={currentQuestionIndex}
-            setCurrentQuestionIndex={setCurrentQuestionIndex}
-            isResponding={isResponding}
-            setIsResponding={setIsResponding}
-          />
+        {isInterviewStarted ? (
+          <div className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={userResponse}
+              onChange={(e) => setUserResponse(e.target.value)}
+              className="flex-1 p-2 border rounded text-black focus:outline-none focus:border-blue-500"
+              placeholder="Type your response..."
+            />
+            <button
+              onClick={handleUserResponse}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Send
+            </button>
+          </div>
         ) : (
-          <p>Waiting to start interview...</p>
+          <button
+            onClick={handleStartInterview}
+            className="px-4 py-2 bg-blue-500 text-white rounded mt-4"
+          >
+            Start Interview
+          </button>
+        )}
+
+        {isInterviewStarted && (
+          <button
+            onClick={handleEndInterview}
+            className="px-4 py-2 bg-red-500 text-white rounded mt-4"
+          >
+            End Interview
+          </button>
         )}
       </div>
     </div>

@@ -73,11 +73,11 @@ const AddJob = () => {
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-gray-700">Job Title</label>
+          <label className="block text-gray-700">Interview Title</label>
           <input
             type="text"
             name="title"
-            placeholder="Enter job title"
+            placeholder="Enter Interview title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-4 py-2 mt-2 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -85,10 +85,10 @@ const AddJob = () => {
         </div>
 
         <div>
-          <label className="block text-gray-700">Job Description</label>
+          <label className="block text-gray-700">Interview Description</label>
           <textarea
             name="description"
-            placeholder="Enter job description"
+            placeholder="Enter Interview description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full px-4 py-2 mt-2 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -97,7 +97,7 @@ const AddJob = () => {
         </div>
 
         <div>
-          <label className="block text-gray-700">Experience</label>
+          <label className="block text-gray-700">Semester </label>
           <input
             type="text"
             name="experience"
@@ -108,29 +108,6 @@ const AddJob = () => {
           />
         </div>
 
-        <div>
-          <label className="block text-gray-700">Location</label>
-          <input
-            type="text"
-            name="location"
-            placeholder="Enter location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="w-full px-4 py-2 mt-2 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-gray-700">Salary</label>
-          <input
-            type="text"
-            name="salary"
-            placeholder="Enter salary"
-            value={salary}
-            onChange={(e) => setSalary(e.target.value)}
-            className="w-full px-4 py-2 mt-2 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
 
         <div>
           <button
@@ -143,7 +120,7 @@ const AddJob = () => {
               "w-full"
             )}
           >
-            Add Job
+            Add Mock Interview
           </button>
         </div>
       </form>

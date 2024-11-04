@@ -41,10 +41,7 @@ const InterviewDetails = ({ params }: { params: { interviewId: string } }) => {
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">{interviewData.jobPosition}</h2>
         <p className="text-gray-700 mb-2">
-          <strong>Job Description:</strong> {interviewData.jobDescription}
-        </p>
-        <p className="text-gray-700 mb-2">
-          <strong>Experience:</strong> {interviewData.experience}
+          <strong>Interview Description:</strong> {interviewData.jobDescription}
         </p>
         <p className="text-gray-700 mb-4">
           <strong>Created by:</strong> {interviewData.createdBy}
@@ -52,7 +49,7 @@ const InterviewDetails = ({ params }: { params: { interviewId: string } }) => {
 
         <Link href={`/interviewai/${params.interviewId}/start`}>
           <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-            Start Interview
+            Start Mock Interview
           </button>
         </Link>
       </div>
