@@ -10,7 +10,7 @@ interface InterviewData {
   jsonResponse: string;
   jobPosition: string;
   jobDescription: string;
-  experience: string;
+  Experience: string; // Updated to match database property
   createdBy: string;
   createdAt: string;
 }

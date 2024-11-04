@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { db } from '@/utils/db';
@@ -13,7 +12,7 @@ interface InterviewData {
   jsonResponse: string;
   jobPosition: string;
   jobDescription: string;
-  experience: string;
+  experience: string; // Ensure this matches the expected field name
   createdBy: string;
   createdAt: string;
 }
@@ -29,7 +28,21 @@ const InterviewDetails = ({ params }: { params: { interviewId: string } }) => {
     try {
       const result = await db.select().from(Interview)
         .where(eq(Interview.interviewId, params.interviewId));
-      setInterviewData(result[0]); // Cast the result to InterviewData
+
+      // Map the result to match InterviewData interface
+      if (result[0]) {
+        const fetchedData = result[0];
+        const mappedData: InterviewData = {
+          interviewId: fetchedData.interviewId,
+          jsonResponse: fetchedData.jsonResponse,
+          jobPosition: fetchedData.jobPosition,
+          jobDescription: fetchedData.jobDescription,
+          experience: fetchedData.Experience, // Map this to match the interface
+          createdBy: fetchedData.createdBy,
+          createdAt: fetchedData.createdAt,
+        };
+        setInterviewData(mappedData);
+      }
     } catch (error) {
       console.error("Error fetching interview details:", error);
     }
